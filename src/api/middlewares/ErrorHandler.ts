@@ -19,10 +19,12 @@
 import { Logger } from "@povario/logger";
 import { NextFunction, Request, Response } from "express";
 import type { ValidationError } from "yup";
+import { PotatoStudyClientError } from "../../util";
 
 type NamedError =
   | "ValidationError"
   | "PotatoStudyClientError"
+  | "JsonWebTokenError"
   | "InvalidTokenError";
 
 export function ErrorHandler(
@@ -34,8 +36,6 @@ export function ErrorHandler(
   if (!err) {
     return next();
   }
-
-  Logger.error(err);
 
   switch (err.name as NamedError) {
     case "ValidationError": {
@@ -50,13 +50,18 @@ export function ErrorHandler(
     }
 
     case "InvalidTokenError":
+    case "JsonWebTokenError":
       return void res.status(401).json({ name: err.name, error: err.message });
 
-    case "PotatoStudyClientError":
-      return void res.status(400).json({ name: err.name, error: err.message });
-
     default:
-      return void res
+      if (err instanceof PotatoStudyClientError) {
+        return void res
+          .status(400)
+          .json({ name: err.name, message: err.message });
+      }
+
+      Logger.log(err);
+      res
         .status(500)
         .json({ name: "unknown", error: "unknown error" });
   }
