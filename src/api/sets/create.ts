@@ -21,7 +21,7 @@ import { Authentication, ValidateBody } from "../middlewares";
 import { DB } from "../../util";
 
 const route = "/create";
-export const create = Router();
+const create = Router();
 
 create.use(Authentication);
 create.use(ValidateBody);
@@ -55,3 +55,5 @@ create.post(route, async (req, res) => {
     flashcards: createdCards
   });
 });
+
+export default create;

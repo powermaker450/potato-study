@@ -18,8 +18,9 @@
 
 import { Router } from "express";
 import { id } from "./:id";
+import create from "./create";
 
 const route = "/sets";
 export const sets = Router();
 
-sets.use(route, id);
+sets.use(route, id, create);
