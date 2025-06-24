@@ -1,0 +1,34 @@
+{
+  "name": "potato-study",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0-only",
+  "packageManager": "pnpm@10.12.1",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.3",
+    "prettier": "^3.6.0",
+    "prisma": "^6.10.1",
+    "typescript": "^5.8.3",
+    "yup": "^1.6.1"
+  },
+  "dependencies": {
+    "@povario/logger": "link:/home/povario/git/logger",
+    "@povario/potato-study-types": "link:/home/povario/git/potato-study-types",
+    "@prisma/client": "^6.10.1",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.8.1"
+  }
+}
