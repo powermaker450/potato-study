@@ -17,12 +17,23 @@
  */
 
 import * as models from "@povario/potato-study-types";
+import * as params from "./util/models";
 import type { JwtPayload } from "jsonwebtoken";
 
 type Validator = keyof typeof models;
 type ValidatorReturnType<V extends Validator> = ReturnType<
   (typeof models)[V]["validate"]
 >;
+
+type ParamValidator = keyof typeof params;
+type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
+  (typeof params)[V]["validate"]
+>;
+
+export interface JwtData extends JwtPayload {
+  email: string;
+  username: string;
+}
 
 declare global {
   namespace NodeJS {
@@ -39,7 +50,12 @@ declare global {
       validate?: <V extends Validator, R extends ValidatorReturnType<V>>(
         validator: V,
       ) => Promise<R>;
-      jwtData?: string | JwtPayload;
+
+      validateParams?: <V extends ParamValidator, R extends ParamValidatorReturnType<V>>(
+        validator: V
+      ) => Promise<R>;
+
+      jwtData?: JwtData;
     }
 
     interface Response {

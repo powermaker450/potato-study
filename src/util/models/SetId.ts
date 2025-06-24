@@ -16,17 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Router } from "express";
-import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import { object, number } from "yup";
 
-const route = "/api";
-export const api = Router();
-
-api.use(VerifyJson);
-api.use(route, auth, sets);
-
-api.get(route, (_, res) => {
-  res.json({ status: "ok" });
+export const SetId = object({
+  id: number().positive().required()
 });

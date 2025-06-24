@@ -17,16 +17,16 @@
  */
 
 import { Router } from "express";
-import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import { ValidateParams } from "../../middlewares";
+import view from "./view";
 
-const route = "/api";
-export const api = Router();
+const route = "/:id";
+export const id = Router();
 
-api.use(VerifyJson);
-api.use(route, auth, sets);
+id.use(ValidateParams);
 
-api.get(route, (_, res) => {
-  res.json({ status: "ok" });
+id.use(route, view);
+
+id.get(route, async (req, res) => {
+  res.redirect(req.path + "/view");
 });

@@ -17,16 +17,9 @@
  */
 
 import { Router } from "express";
-import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import { id } from "./:id";
 
-const route = "/api";
-export const api = Router();
+const route = "/sets";
+export const sets = Router();
 
-api.use(VerifyJson);
-api.use(route, auth, sets);
-
-api.get(route, (_, res) => {
-  res.json({ status: "ok" });
-});
+sets.use(route, id);

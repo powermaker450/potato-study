@@ -17,16 +17,20 @@
  */
 
 import { Router } from "express";
-import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import { DB, NotFoundError } from "../../../util";
 
-const route = "/api";
-export const api = Router();
+const route = "/view";
+const view = Router();
 
-api.use(VerifyJson);
-api.use(route, auth, sets);
+view.get(route, async (req, res) => {
+  const { id } = await req.validateParams!("SetId");
 
-api.get(route, (_, res) => {
-  res.json({ status: "ok" });
+  const set = await DB.flashcardSet.findFirst({ where: { id } });
+  if (!set) {
+    throw new NotFoundError();
+  }
+
+  res.json({ ...set });
 });
+
+export default view;

@@ -16,17 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Router } from "express";
-import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import { NextFunction, Request, Response } from "express";
+import * as params from "../../util/models";
 
-const route = "/api";
-export const api = Router();
+type ParamValidator = keyof typeof params;
+type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
+  (typeof params)[V]["validate"]
+>;
 
-api.use(VerifyJson);
-api.use(route, auth, sets);
+export function ValidateParams(
+  req: Request,
+  _: Response,
+  next: NextFunction
+): void {
+  req.validateParams = async function <
+    V extends ParamValidator,
+    R extends ParamValidatorReturnType<V>,
+  >(validator: V): Promise<R> {
+    return await params[validator].validate(this.params,  {
+      abortEarly: false,
+    }) as R;
+  }
 
-api.get(route, (_, res) => {
-  res.json({ status: "ok" });
-});
+  next();
+}

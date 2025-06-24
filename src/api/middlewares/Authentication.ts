@@ -18,6 +18,7 @@
 
 import { NextFunction, Request, Response } from "express";
 import { DB, InvalidTokenError, verifyToken } from "../../util";
+import { JwtData } from "../../custom";
 
 export async function Authentication(
   req: Request,
@@ -33,6 +34,6 @@ export async function Authentication(
     throw new InvalidTokenError();
   }
 
-  req.jwtData = verifyToken(req.headers.authorization);
+  req.jwtData = verifyToken(req.headers.authorization) as JwtData;
   next();
 }

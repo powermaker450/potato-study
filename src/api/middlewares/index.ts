@@ -21,4 +21,5 @@ export * from "./ErrorHandler";
 export * from "./NotFound";
 export * from "./RequestLogger";
 export * from "./ValidateBody";
+export * from "./ValidateParams";
 export * from "./VerifyJson";
