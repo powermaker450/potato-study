@@ -16,13 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextFunction, Request, Response } from "express";
 import * as params from "../../util/models";
-
-type ParamValidator = keyof typeof params;
-type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
-  (typeof params)[V]["validate"]
->;
+import { NextFunction, Request, Response } from "express";
+import type { ParamValidator, ParamValidatorReturnType } from "../../custom";
 
 export function ValidateParams(
   req: Request,

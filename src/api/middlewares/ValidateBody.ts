@@ -18,11 +18,8 @@
 
 import * as models from "@povario/potato-study-types";
 import { NextFunction, Request, Response } from "express";
+import type { BodyValidator, BodyValidatorReturnType } from "../../custom"; 
 
-type Validator = keyof typeof models;
-type ValidatorReturnType<V extends Validator> = ReturnType<
-  (typeof models)[V]["validate"]
->;
 
 export function ValidateBody(
   req: Request,
@@ -30,8 +27,8 @@ export function ValidateBody(
   next: NextFunction,
 ): void {
   req.validate = async function <
-    V extends Validator,
-    R extends ValidatorReturnType<V>,
+    V extends BodyValidator,
+    R extends BodyValidatorReturnType<V>,
   >(validator: V): Promise<R> {
     return (await models[validator].validate(this.body, {
       abortEarly: false,

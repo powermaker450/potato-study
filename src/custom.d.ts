@@ -20,13 +20,13 @@ import * as models from "@povario/potato-study-types";
 import * as params from "./util/models";
 import type { JwtPayload } from "jsonwebtoken";
 
-type Validator = keyof typeof models;
-type ValidatorReturnType<V extends Validator> = ReturnType<
+export type BodyValidator = keyof typeof models;
+export type BodyValidatorReturnType<V extends Validator> = ReturnType<
   (typeof models)[V]["validate"]
 >;
 
-type ParamValidator = keyof typeof params;
-type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
+export type ParamValidator = keyof typeof params;
+export type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
   (typeof params)[V]["validate"]
 >;
 
@@ -47,7 +47,7 @@ declare global {
 
   namespace Express {
     interface Request {
-      validate?: <V extends Validator, R extends ValidatorReturnType<V>>(
+      validate?: <V extends BodyValidator, R extends BodyValidatorReturnType<V>>(
         validator: V,
       ) => Promise<R>;
 
