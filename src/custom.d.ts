@@ -16,13 +16,13 @@
  * along with this program.  if not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as models from "@povario/potato-study-types";
+import schema from "@povario/potato-study.js/schema";
 import * as params from "./util/models";
 import type { JwtPayload } from "jsonwebtoken";
 
-export type BodyValidator = keyof typeof models;
+export type BodyValidator = keyof typeof schema;
 export type BodyValidatorReturnType<V extends Validator> = ReturnType<
-  (typeof models)[V]["validate"]
+  (typeof schema)[V]["validate"]
 >;
 
 export type ParamValidator = keyof typeof params;

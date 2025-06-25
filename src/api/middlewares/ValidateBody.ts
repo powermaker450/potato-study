@@ -16,10 +16,9 @@
  * along with this program.  if not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as models from "@povario/potato-study-types";
+import schema from "@povario/potato-study.js/schema";
 import { NextFunction, Request, Response } from "express";
-import type { BodyValidator, BodyValidatorReturnType } from "../../custom"; 
-
+import type { BodyValidator, BodyValidatorReturnType } from "../../custom";
 
 export function ValidateBody(
   req: Request,
@@ -30,7 +29,7 @@ export function ValidateBody(
     V extends BodyValidator,
     R extends BodyValidatorReturnType<V>,
   >(validator: V): Promise<R> {
-    return (await models[validator].validate(this.body, {
+    return (await schema[validator].validate(this.body, {
       abortEarly: false,
     })) as R;
   };

@@ -11,9 +11,9 @@ importers:
       '@povario/logger':
         specifier: link:/home/povario/git/logger
         version: link:../logger
-      '@povario/potato-study-types':
-        specifier: link:/home/povario/git/potato-study-types
-        version: link:../potato-study-types
+      '@povario/potato-study.js':
+        specifier: link:/home/povario/git/potato-study.js
+        version: link:../potato-study.js
       '@prisma/client':
         specifier: ^6.10.1
         version: 6.10.1(prisma@6.10.1(typescript@5.8.3))(typescript@5.8.3)
