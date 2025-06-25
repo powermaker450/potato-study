@@ -16,7 +16,7 @@
  * along with this program.  if not, see <https://www.gnu.org/licenses/>.
  */
 
-import schema from "@povario/potato-study.js/schema";
+import * as schema from "@povario/potato-study.js/schema";
 import { NextFunction, Request, Response } from "express";
 import type { BodyValidator, BodyValidatorReturnType } from "../../custom";
 
