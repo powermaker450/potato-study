@@ -16,9 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { object, number } from "yup";
-import { SetId } from "./SetId";
+import { Router } from "express";
+import { ValidateParams } from "../../../middlewares";
+import { Flashcard } from "@povario/potato-study.js/models";
+import { DB, NotFoundError } from "../../../../util";
+import { id } from "./:id";
 
-export const CardId = object({
-  cardId: number().min(0).required(),
-}).concat(SetId);
+const route = "/cards";
+export const cards = Router({ mergeParams: true });
+
+cards.use(ValidateParams);
+
+cards.get(route, async (req, res) => {
+  const { setId } = await req.validateParams!("SetId");
+
+  const set = await DB.flashcardSet.findFirst({ where: { id: setId } });
+
+  if (!set) {
+    throw new NotFoundError();
+  }
+
+  const flashcards: Flashcard[] = await DB.flashcard.findMany({
+    where: { setId },
+  });
+  res.json(flashcards);
+});
+
+cards.use(route, id);

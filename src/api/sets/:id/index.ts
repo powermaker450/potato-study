@@ -20,6 +20,7 @@ import { Router } from "express";
 import { ValidateParams } from "../../middlewares";
 import { DB, NotFoundError } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
+import { cards } from "./cards";
 
 const route = "/:setId";
 export const id = Router();
@@ -43,3 +44,5 @@ id.get(route, async (req, res) => {
 
   res.json(data);
 });
+
+id.use(route, cards);
