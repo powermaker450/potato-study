@@ -17,15 +17,12 @@
  */
 
 import { Router } from "express";
-import { ValidateParams } from "../../middlewares";
 import { DB, NotFoundError } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
 import { cards } from "./cards";
 
 const route = "/:setId";
 export const id = Router();
-
-id.use(ValidateParams);
 
 id.get(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");

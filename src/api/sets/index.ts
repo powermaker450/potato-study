@@ -21,13 +21,19 @@ import { id } from "./:id";
 import { DB } from "../../util";
 import { FlashcardSet as DBFlashcard } from "@prisma/client";
 import { FlashcardSet } from "@povario/potato-study.js/models";
-import { ValidateBody, ValidateQuery } from "../middlewares";
+import {
+  Authentication,
+  ValidateBody,
+  ValidateParams,
+  ValidateQuery,
+} from "../middlewares";
 
 const route = "/sets";
 export const sets = Router();
 
 sets.use(ValidateQuery);
 sets.use(ValidateBody);
+sets.use(ValidateParams);
 
 sets.get(route, async (req, res) => {
   let sets: DBFlashcard[];
@@ -80,10 +86,12 @@ sets.get(route, async (req, res) => {
   res.json(data);
 });
 
+sets.post(route, Authentication);
+
 sets.post(route, async (req, res) => {
   const set = await req.validate!("FlashcardSetCreate");
-  const { username } = req.jwtData!;
-  const user = (await DB.user.findFirst({ where: { username } }))!;
+  const { email } = req.jwtData!;
+  const user = (await DB.user.findFirst({ where: { email } }))!;
 
   const createdSet = await DB.flashcardSet.create({
     data: {
