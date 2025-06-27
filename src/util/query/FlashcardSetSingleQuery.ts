@@ -16,8 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { object, number } from "yup";
+import { InferType, object, number, string } from "yup";
 
-export const SetId = object({
-  id: number().positive().required()
+export const FlashcardSetSingleQuery = object({
+  creator: number().positive(),
+  name: string(),
 });
+
+export interface FlashcardSetSingleQuery
+  extends InferType<typeof FlashcardSetSingleQuery> {}

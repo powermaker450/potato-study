@@ -16,11 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./Authentication";
-export * from "./ErrorHandler";
-export * from "./NotFound";
-export * from "./RequestLogger";
-export * from "./ValidateBody";
-export * from "./ValidateParams";
-export * from "./ValidateQuery";
-export * from "./VerifyJson";
+import { InferType, object, string, array, number } from "yup";
+
+export const FlashcardSetMultiQuery = object({
+  creators: array(number().positive().required()),
+  name: string(),
+});
+
+export interface FlashcardSetMultiQuery
+  extends InferType<typeof FlashcardSetMultiQuery> {}

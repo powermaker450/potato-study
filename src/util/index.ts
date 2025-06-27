@@ -17,7 +17,7 @@
  */
 
 export * from "./errors";
-export * from "./models";
+export * from "./params";
 export * from "./config";
 export * from "./DB";
 export * from "./generateToken";

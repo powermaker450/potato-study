@@ -16,11 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./Authentication";
-export * from "./ErrorHandler";
-export * from "./NotFound";
-export * from "./RequestLogger";
-export * from "./ValidateBody";
-export * from "./ValidateParams";
-export * from "./ValidateQuery";
-export * from "./VerifyJson";
+import { QueryValidator, QueryValidatorReturnType } from "../../custom";
+import * as queries from "../../util/query";
+import { NextFunction, Request, Response } from "express";
+
+export function ValidateQuery(
+  req: Request,
+  _: Response,
+  next: NextFunction,
+): void {
+  req.validateQuery = async function <
+    V extends QueryValidator,
+    R extends QueryValidatorReturnType<V>,
+  >(validator: V): Promise<R> {
+    return (await queries[validator].validate(this.query, {
+      abortEarly: false,
+    })) as R;
+  };
+
+  next();
+}

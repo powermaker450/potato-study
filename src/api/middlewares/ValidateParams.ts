@@ -16,23 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import * as params from "../../util/models";
+import * as params from "../../util/params";
 import { NextFunction, Request, Response } from "express";
 import type { ParamValidator, ParamValidatorReturnType } from "../../custom";
 
 export function ValidateParams(
   req: Request,
   _: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   req.validateParams = async function <
     V extends ParamValidator,
     R extends ParamValidatorReturnType<V>,
   >(validator: V): Promise<R> {
-    return await params[validator].validate(this.params,  {
+    return (await params[validator].validate(this.params, {
       abortEarly: false,
-    }) as R;
-  }
+    })) as R;
+  };
 
   next();
 }

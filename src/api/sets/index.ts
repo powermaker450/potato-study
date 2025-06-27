@@ -20,14 +20,52 @@ import { Router } from "express";
 import { id } from "./:id";
 import create from "./create";
 import { DB } from "../../util";
+import { FlashcardSet as DBFlashcard } from "@prisma/client";
 import { FlashcardSet } from "@povario/potato-study.js/models";
+import { ValidateQuery } from "../middlewares";
+import { Logger } from "@povario/logger";
 
 const route = "/sets";
 export const sets = Router();
 
-sets.get(route, async (_, res) => {
-  const sets = await DB.flashcardSet.findMany();
+sets.use(ValidateQuery);
+
+sets.get(route, async (req, res) => {
+  let sets: DBFlashcard[];
   const data: FlashcardSet[] = [];
+
+  // If there are request parameters, check them
+  if (Object.keys(req.query).length) {
+    if (typeof req.query.creator === "string") {
+      const { creator, name } = await req.validateQuery!(
+        "FlashcardSetSingleQuery",
+      );
+
+      sets = await DB.flashcardSet.findMany({
+        where: {
+          creator,
+          name: {
+            contains: name,
+          },
+        },
+      });
+    } else {
+      const { creators, name } = await req.validateQuery!(
+        "FlashcardSetMultiQuery",
+      );
+
+      sets = await DB.flashcardSet.findMany({
+        where: {
+          name: {
+            contains: name,
+          },
+          OR: creators?.map((creator) => ({ creator })),
+        },
+      });
+    }
+  } else {
+    sets = await DB.flashcardSet.findMany();
+  }
 
   for (const set of sets) {
     const flashcards = await DB.flashcard.findMany({

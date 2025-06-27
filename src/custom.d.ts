@@ -17,7 +17,8 @@
  */
 
 import schema from "@povario/potato-study.js/schema";
-import * as params from "./util/models";
+import * as params from "./util/params";
+import * as queries from "./util/query";
 import type { JwtPayload } from "jsonwebtoken";
 
 export type BodyValidator = keyof typeof schema;
@@ -28,6 +29,11 @@ export type BodyValidatorReturnType<V extends Validator> = ReturnType<
 export type ParamValidator = keyof typeof params;
 export type ParamValidatorReturnType<V extends ParamValidator> = ReturnType<
   (typeof params)[V]["validate"]
+>;
+
+export type QueryValidator = keyof typeof queries;
+export type QueryValidatorReturnType<V extends QueryValidator> = ReturnType<
+  (typeof queries)[V]["validate"]
 >;
 
 export interface JwtData extends JwtPayload {
@@ -47,12 +53,25 @@ declare global {
 
   namespace Express {
     interface Request {
-      validate?: <V extends BodyValidator, R extends BodyValidatorReturnType<V>>(
+      validate?: <
+        V extends BodyValidator,
+        R extends BodyValidatorReturnType<V>,
+      >(
         validator: V,
       ) => Promise<R>;
 
-      validateParams?: <V extends ParamValidator, R extends ParamValidatorReturnType<V>>(
-        validator: V
+      validateParams?: <
+        V extends ParamValidator,
+        R extends ParamValidatorReturnType<V>,
+      >(
+        validator: V,
+      ) => Promise<R>;
+
+      validateQuery?: <
+        V extends QueryValidator,
+        R extends QueryValidatorReturnType<V>,
+      >(
+        validator: V,
       ) => Promise<R>;
 
       jwtData?: JwtData;

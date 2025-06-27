@@ -34,25 +34,25 @@ create.post(route, async (req, res) => {
   const createdSet = await DB.flashcardSet.create({
     data: {
       creator: user.id,
-      name: set.name
-    }
+      name: set.name,
+    },
   });
 
-  const mappedCards = set.flashcards.map(flashcard => {
+  const mappedCards = set.flashcards.map((flashcard) => {
     return {
       ...flashcard,
       creator: user.id,
-      setId: createdSet.id 
-    }
+      setId: createdSet.id,
+    };
   });
 
   const createdCards = await DB.flashcard.createManyAndReturn({
-    data: mappedCards
+    data: mappedCards,
   });
 
   res.json({
     ...createdSet,
-    flashcards: createdCards
+    flashcards: createdCards,
   });
 });
 

@@ -16,11 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./Authentication";
-export * from "./ErrorHandler";
-export * from "./NotFound";
-export * from "./RequestLogger";
-export * from "./ValidateBody";
-export * from "./ValidateParams";
-export * from "./ValidateQuery";
-export * from "./VerifyJson";
+import { object, number } from "yup";
+
+export const SetId = object({
+  id: number().positive().required(),
+});

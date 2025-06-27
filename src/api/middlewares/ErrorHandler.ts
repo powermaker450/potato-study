@@ -61,8 +61,6 @@ export function ErrorHandler(
       }
 
       Logger.log(err);
-      res
-        .status(500)
-        .json({ name: "unknown", error: "unknown error" });
+      res.status(500).json({ name: "unknown", error: "unknown error" });
   }
 }
