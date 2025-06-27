@@ -18,7 +18,8 @@
 
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "./config";
+import { JwtData } from "../custom";
 
-export function verifyToken(token: string) {
-  return jwt.verify(token, SECRET_KEY!);
+export function verifyToken(token: string): JwtData {
+  return jwt.verify(token, SECRET_KEY!) as JwtData;
 }

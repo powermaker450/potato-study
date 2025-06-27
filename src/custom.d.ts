@@ -20,6 +20,7 @@ import schema from "@povario/potato-study.js/schema";
 import * as params from "./util/params";
 import * as queries from "./util/query";
 import type { JwtPayload } from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
 
 export type BodyValidator = keyof typeof schema;
 export type BodyValidatorReturnType<V extends Validator> = ReturnType<
@@ -40,6 +41,12 @@ export interface JwtData extends JwtPayload {
   email: string;
   username: string;
 }
+
+export type MiddlewareFunction<T = void> = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => T;
 
 declare global {
   namespace NodeJS {

@@ -16,9 +16,9 @@
  * along with this program.  if not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "../../util";
+import { MiddlewareFunction } from "../../custom";
 
-export function NotFound(_: Request, __: Response, ___: NextFunction): void {
+export const NotFound: MiddlewareFunction = async (_, __, ___) => {
   throw new NotFoundError();
-}
+};

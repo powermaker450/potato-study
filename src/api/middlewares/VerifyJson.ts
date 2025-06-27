@@ -16,14 +16,10 @@
  * along with this program.  if not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextFunction, Request, Response } from "express";
+import { MiddlewareFunction } from "../../custom";
 import { BodyNotJsonError } from "../../util";
 
-export function VerifyJson(
-  req: Request,
-  _: Response,
-  next: NextFunction,
-): void {
+export const VerifyJson: MiddlewareFunction = (req, _, next) => {
   if (
     req.headers["content-type"] &&
     req.headers["content-type"] !== "application/json"
@@ -33,4 +29,4 @@ export function VerifyJson(
 
   req.headers["content-type"] = "application/json";
   next();
-}
+};

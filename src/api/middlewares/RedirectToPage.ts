@@ -16,16 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextFunction, Request, Response } from "express";
+import { MiddlewareFunction } from "../../custom";
 
-export function RedirectToPage(
-  { path, originalUrl }: Request,
-  res: Response,
-  next: NextFunction,
-): void {
+export const RedirectToPage: MiddlewareFunction = (
+  { path, originalUrl },
+  res,
+  next,
+) => {
   if (path.endsWith("/")) {
     return res.redirect(originalUrl.substring(0, originalUrl.length - 1));
   }
 
   next();
-}
+};

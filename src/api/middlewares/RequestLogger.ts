@@ -17,15 +17,15 @@
  */
 
 import { Logger } from "@povario/logger";
-import { NextFunction, Request, Response } from "express";
+import { MiddlewareFunction } from "../../custom";
 
 const logger = new Logger("Requests");
 
-export function RequestLogger(
-  { headers: { "user-agent": agent }, method, path }: Request,
-  _: Response,
-  next: NextFunction,
-): void {
-  logger.log(`${agent} ${method} - ${path}`);
+export const RequestLogger: MiddlewareFunction = (
+  { headers, method, path },
+  _,
+  next,
+) => {
+  logger.log(`${headers["user-agent"]} ${method} - ${path}`);
   next();
-}
+};

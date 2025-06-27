@@ -16,24 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextFunction, Request, Response } from "express";
 import { DB, InvalidTokenError, verifyToken } from "../../util";
-import { JwtData } from "../../custom";
+import { MiddlewareFunction } from "../../custom";
 
-export async function Authentication(
-  req: Request,
-  _: Response,
-  next: NextFunction,
-): Promise<void> {
-  if (
-    !req.headers.authorization ||
-    (await DB.invalidToken.findFirst({
-      where: { token: req.headers.authorization },
-    }))
-  ) {
+export const Authentication: MiddlewareFunction = async (req, _, next) => {
+  if (!req.headers.authorization) {
     throw new InvalidTokenError();
   }
 
-  req.jwtData = verifyToken(req.headers.authorization) as JwtData;
+  const invalidToken = !!(await DB.invalidToken.findFirst({
+    where: { token: req.headers.authorization },
+  }));
+  if (invalidToken) {
+    throw new InvalidTokenError();
+  }
+
+  req.jwtData = verifyToken(req.headers.authorization);
   next();
-}
+};
