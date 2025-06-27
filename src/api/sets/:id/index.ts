@@ -18,15 +18,28 @@
 
 import { Router } from "express";
 import { ValidateParams } from "../../middlewares";
-import view from "./view";
+import { DB, NotFoundError } from "../../../util";
+import { FlashcardSet } from "@povario/potato-study.js/models";
 
 const route = "/:id";
 export const id = Router();
 
 id.use(ValidateParams);
 
-id.use(route, view);
-
 id.get(route, async (req, res) => {
-  res.redirect(req.path + "/view");
+  const { id } = await req.validateParams!("SetId");
+
+  const set = await DB.flashcardSet.findFirst({ where: { id } });
+  if (!set) {
+    throw new NotFoundError();
+  }
+
+  const flashcards = await DB.flashcard.findMany({ where: { setId: id } });
+
+  const data: FlashcardSet = {
+    ...set,
+    flashcards
+  };
+
+  res.json(data);
 });
