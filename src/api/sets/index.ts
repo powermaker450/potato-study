@@ -19,8 +19,28 @@
 import { Router } from "express";
 import { id } from "./:id";
 import create from "./create";
+import { DB } from "../../util";
+import { FlashcardSet } from "@povario/potato-study.js/models";
 
 const route = "/sets";
 export const sets = Router();
+
+sets.get(route, async (_, res) => {
+  const sets = await DB.flashcardSet.findMany();
+  const data: FlashcardSet[] = [];
+
+  for (const set of sets) {
+    const flashcards = await DB.flashcard.findMany({
+      where: { setId: set.id },
+    });
+
+    data.push({
+      ...set,
+      flashcards,
+    });
+  }
+
+  res.json(data);
+});
 
 sets.use(route, id, create);
