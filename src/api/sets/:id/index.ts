@@ -21,20 +21,20 @@ import { ValidateParams } from "../../middlewares";
 import { DB, NotFoundError } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
 
-const route = "/:id";
+const route = "/:setId";
 export const id = Router();
 
 id.use(ValidateParams);
 
 id.get(route, async (req, res) => {
-  const { id } = await req.validateParams!("SetId");
+  const { setId } = await req.validateParams!("SetId");
 
-  const set = await DB.flashcardSet.findFirst({ where: { id } });
+  const set = await DB.flashcardSet.findFirst({ where: { id: setId } });
   if (!set) {
     throw new NotFoundError();
   }
 
-  const flashcards = await DB.flashcard.findMany({ where: { setId: id } });
+  const flashcards = await DB.flashcard.findMany({ where: { setId } });
 
   const data: FlashcardSet = {
     ...set,

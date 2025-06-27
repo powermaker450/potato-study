@@ -16,8 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { object, number } from "yup";
+import { InferType, object, number } from "yup";
 
 export const SetId = object({
-  id: number().positive().required(),
+  setId: number().positive().required(),
 });
+
+export interface SetId extends InferType<typeof SetId> {};
