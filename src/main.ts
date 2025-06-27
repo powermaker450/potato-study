@@ -20,13 +20,19 @@ import express from "express";
 import { DB, PORT } from "./util";
 import { Logger } from "@povario/logger";
 import { api } from "./api";
-import { ErrorHandler, NotFound, RequestLogger } from "./api/middlewares";
+import {
+  ErrorHandler,
+  NotFound,
+  RedirectToPage,
+  RequestLogger,
+} from "./api/middlewares";
 
 const app = express();
 const port = Number(PORT) || 8081;
 const logger = new Logger("Main");
 
 app.use(express.json());
+app.use(RedirectToPage);
 app.use(api);
 app.use(NotFound);
 app.use(RequestLogger);

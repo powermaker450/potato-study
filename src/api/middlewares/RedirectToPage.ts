@@ -16,12 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./Authentication";
-export * from "./ErrorHandler";
-export * from "./NotFound";
-export * from "./RedirectToPage";
-export * from "./RequestLogger";
-export * from "./ValidateBody";
-export * from "./ValidateParams";
-export * from "./ValidateQuery";
-export * from "./VerifyJson";
+import { NextFunction, Request, Response } from "express";
+
+export function RedirectToPage(
+  { path, originalUrl }: Request,
+  res: Response,
+  next: NextFunction,
+): void {
+  if (path.endsWith("/")) {
+    return res.redirect(originalUrl.substring(0, originalUrl.length - 1));
+  }
+
+  next();
+}
