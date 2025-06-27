@@ -26,7 +26,8 @@ type NamedError =
   | "PotatoStudyClientError"
   | "JsonWebTokenError"
   | "InvalidTokenError"
-  | "NotFoundError";
+  | "NotFoundError"
+  | "PrismaClientKnownRequestError";
 
 export function ErrorHandler(
   err: Error,
@@ -51,7 +52,10 @@ export function ErrorHandler(
     }
 
     case "NotFoundError":
-      return void res.status(404).json({ name: err.name, error: err.message });
+    case "PrismaClientKnownRequestError":
+      return void res
+        .status(404)
+        .json({ name: "NotFoundError", error: "not found" });
 
     case "InvalidTokenError":
     case "JsonWebTokenError":

@@ -18,7 +18,7 @@
 
 import { Router } from "express";
 import { ValidateParams } from "../../../../middlewares";
-import { DB, NotFoundError } from "../../../../../util";
+import { DB } from "../../../../../util";
 import { Flashcard } from "@povario/potato-study.js/models";
 
 const route = "/:cardId";
@@ -29,19 +29,9 @@ id.use(ValidateParams);
 id.get(route, async (req, res) => {
   const { setId, cardId } = await req.validateParams!("CardId");
 
-  const set = await DB.flashcardSet.findFirst({ where: { id: setId } });
-
-  if (!set) {
-    throw new NotFoundError();
-  }
-
-  const flashcard: Flashcard | null = await DB.flashcard.findFirst({
-    where: { setId, index: cardId },
+  const flashcard: Flashcard = await DB.flashcard.findFirstOrThrow({
+    where: { setId, index: cardId }
   });
-
-  if (!flashcard) {
-    throw new NotFoundError();
-  }
 
   res.json(flashcard);
 });

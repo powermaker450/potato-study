@@ -17,7 +17,7 @@
  */
 
 import { Router } from "express";
-import { DB, NotFoundError } from "../../../util";
+import { DB } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
 import { cards } from "./cards";
 
@@ -26,12 +26,7 @@ export const id = Router();
 
 id.get(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
-
-  const set = await DB.flashcardSet.findFirst({ where: { id: setId } });
-  if (!set) {
-    throw new NotFoundError();
-  }
-
+  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
   const flashcards = await DB.flashcard.findMany({ where: { setId } });
 
   const data: FlashcardSet = {
