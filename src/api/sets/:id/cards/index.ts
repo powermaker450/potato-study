@@ -17,13 +17,18 @@
  */
 
 import { Router } from "express";
-import { ValidateParams } from "../../../middlewares";
+import {
+  Authentication,
+  ValidateBody,
+  ValidateParams,
+} from "../../../middlewares";
 import { Flashcard } from "@povario/potato-study.js/models";
-import { DB, NotFoundError } from "../../../../util";
+import { DB, NoSetAccessError, NotFoundError } from "../../../../util";
 import { id } from "./:id";
 
 const route = "/cards";
 export const cards = Router({ mergeParams: true });
+cards.use(route, id);
 
 cards.use(ValidateParams);
 
@@ -42,4 +47,33 @@ cards.get(route, async (req, res) => {
   res.json(flashcards);
 });
 
-cards.use(route, id);
+cards.use(ValidateBody);
+cards.use(Authentication);
+
+cards.post(route, async (req, res) => {
+  const { setId } = await req.validateParams!("SetId");
+  const card = await req.validate!("FlashcardCreate");
+
+  const set = await DB.flashcardSet.findFirst({ where: { id: setId } });
+  const user = await DB.user.findFirst({
+    where: { email: req.jwtData!.email },
+  });
+
+  if (!set) {
+    throw new NotFoundError();
+  }
+
+  if (set.creator !== user!.id) {
+    throw new NoSetAccessError();
+  }
+
+  const flashcard: Flashcard = await DB.flashcard.create({
+    data: {
+      ...card,
+      setId,
+      creator: user!.id,
+    },
+  });
+
+  res.json(flashcard);
+});

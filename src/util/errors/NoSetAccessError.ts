@@ -16,14 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./BodyNotJsonError";
-export * from "./EmailExistsError";
-export * from "./IncorrectPasswordError";
-export * from "./InvalidTokenError";
-export * from "./NotFoundError";
-export * from "./NoSetAccessError";
-export * from "./PotatoStudyClientError";
-export * from "./PotatoStudyError";
-export * from "./RegistrationDisabledError";
-export * from "./UsernameExistsError";
-export * from "./UserNotExistError";
+import { PotatoStudyClientError } from "./PotatoStudyClientError";
+
+export class NoSetAccessError extends PotatoStudyClientError {
+  public name = "NoSetAccessError";
+
+  public constructor() {
+    super("user does not have edit access to this set");
+  }
+}
