@@ -17,7 +17,8 @@
  */
 
 import { object, number } from "yup";
+import { SetId } from "./SetId";
 
-export const SetId = object({
-  setId: number().positive().required(),
-});
+export const CardId = object({
+  cardId: number().positive().required(),
+}).concat(SetId);
