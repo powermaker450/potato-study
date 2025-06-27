@@ -93,16 +93,16 @@ sets.post(route, async (req, res) => {
   });
 
   const flashcards = await DB.flashcard.createManyAndReturn({
-    data: set.flashcards.map(flashcard => ({
+    data: set.flashcards.map((flashcard) => ({
       ...flashcard,
       creator: user.id,
-      setId: createdSet.id
-    }))
+      setId: createdSet.id,
+    })),
   });
 
   const data: FlashcardSet = {
     ...createdSet,
-    flashcards
+    flashcards,
   };
 
   res.json(data);

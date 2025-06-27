@@ -38,7 +38,7 @@ id.get(route, async (req, res) => {
 
   const data: FlashcardSet = {
     ...set,
-    flashcards
+    flashcards,
   };
 
   res.json(data);

@@ -22,4 +22,4 @@ export const SetId = object({
   setId: number().positive().required(),
 });
 
-export interface SetId extends InferType<typeof SetId> {};
+export interface SetId extends InferType<typeof SetId> {}
