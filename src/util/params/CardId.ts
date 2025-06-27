@@ -20,5 +20,5 @@ import { object, number } from "yup";
 import { SetId } from "./SetId";
 
 export const CardId = object({
-  cardId: number().min(0).required(),
+  cardId: number().positive().required(),
 }).concat(SetId);
