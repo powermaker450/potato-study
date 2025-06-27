@@ -25,7 +25,8 @@ type NamedError =
   | "ValidationError"
   | "PotatoStudyClientError"
   | "JsonWebTokenError"
-  | "InvalidTokenError";
+  | "InvalidTokenError"
+  | "NotFoundError";
 
 export function ErrorHandler(
   err: Error,
@@ -48,6 +49,9 @@ export function ErrorHandler(
 
       return void res.status(400).json({ name: err.name, error });
     }
+
+    case "NotFoundError":
+      return void res.status(404).json({ name: err.name, error: err.message });
 
     case "InvalidTokenError":
     case "JsonWebTokenError":
