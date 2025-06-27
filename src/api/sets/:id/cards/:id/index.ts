@@ -30,7 +30,7 @@ id.get(route, async (req, res) => {
   const { setId, cardId } = await req.validateParams!("CardId");
 
   const flashcard: Flashcard = await DB.flashcard.findFirstOrThrow({
-    where: { setId, index: cardId }
+    where: { setId, id: cardId },
   });
 
   res.json(flashcard);
