@@ -18,17 +18,16 @@
 
 import { Router } from "express";
 import { id } from "./:id";
-import create from "./create";
 import { DB } from "../../util";
 import { FlashcardSet as DBFlashcard } from "@prisma/client";
 import { FlashcardSet } from "@povario/potato-study.js/models";
-import { ValidateQuery } from "../middlewares";
-import { Logger } from "@povario/logger";
+import { ValidateBody, ValidateQuery } from "../middlewares";
 
 const route = "/sets";
 export const sets = Router();
 
 sets.use(ValidateQuery);
+sets.use(ValidateBody);
 
 sets.get(route, async (req, res) => {
   let sets: DBFlashcard[];
@@ -81,4 +80,32 @@ sets.get(route, async (req, res) => {
   res.json(data);
 });
 
-sets.use(route, id, create);
+sets.post(route, async (req, res) => {
+  const set = await req.validate!("FlashcardSetCreate");
+  const { username } = req.jwtData!;
+  const user = (await DB.user.findFirst({ where: { username } }))!;
+
+  const createdSet = await DB.flashcardSet.create({
+    data: {
+      creator: user.id,
+      name: set.name,
+    },
+  });
+
+  const flashcards = await DB.flashcard.createManyAndReturn({
+    data: set.flashcards.map(flashcard => ({
+      ...flashcard,
+      creator: user.id,
+      setId: createdSet.id
+    }))
+  });
+
+  const data: FlashcardSet = {
+    ...createdSet,
+    flashcards
+  };
+
+  res.json(data);
+});
+
+sets.use(route, id);
