@@ -67,5 +67,5 @@ cards.post(route, async (req, res) => {
     },
   });
 
-  res.json(flashcard);
+  res.status(201).json(flashcard);
 });

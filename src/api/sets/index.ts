@@ -113,7 +113,7 @@ sets.post(route, async (req, res) => {
     flashcards,
   };
 
-  res.json(data);
+  res.status(201).json(data);
 });
 
 sets.use(route, id);
