@@ -22,6 +22,8 @@ import logout from "./logout";
 import register from "./register";
 
 const route = "/auth";
-export const auth = Router();
+const auth = Router();
 
 auth.use(route, login, logout, register);
+
+export default auth;

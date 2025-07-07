@@ -22,11 +22,11 @@ import { DB, NoSetAccessError } from "../../../../../util";
 import { Flashcard } from "@povario/potato-study.js/models";
 
 const route = "/:cardId";
-export const id = Router({ mergeParams: true });
+const cardId = Router({ mergeParams: true });
 
-id.use(ValidateParams);
+cardId.use(ValidateParams);
 
-id.get(route, async (req, res) => {
+cardId.get(route, async (req, res) => {
   const { setId, cardId } = await req.validateParams!("CardId");
 
   const flashcard: Flashcard = await DB.flashcard.findFirstOrThrow({
@@ -36,7 +36,7 @@ id.get(route, async (req, res) => {
   res.json(flashcard);
 });
 
-id.patch(route, Authentication, async (req, res) => {
+cardId.patch(route, Authentication, async (req, res) => {
   const { setId, cardId } = await req.validateParams!("CardId");
   const { email } = req.jwtData!;
   const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
@@ -55,7 +55,7 @@ id.patch(route, Authentication, async (req, res) => {
   res.json(updatedCard);
 });
 
-id.delete(route, Authentication, async (req, res) => {
+cardId.delete(route, Authentication, async (req, res) => {
   const { setId, cardId } = await req.validateParams!("CardId");
   const { email } = req.jwtData!;
   const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
@@ -69,3 +69,5 @@ id.delete(route, Authentication, async (req, res) => {
 
   res.status(204).send();
 });
+
+export default cardId;

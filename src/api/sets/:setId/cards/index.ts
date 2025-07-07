@@ -20,11 +20,10 @@ import { Router } from "express";
 import { Authentication } from "../../../middlewares";
 import { Flashcard } from "@povario/potato-study.js/models";
 import { DB, NoSetAccessError, NotFoundError } from "../../../../util";
-import { id } from "./:id";
+import cardId from "./:cardId";
 
 const route = "/cards";
-export const cards = Router({ mergeParams: true });
-cards.use(route, id);
+const cards = Router({ mergeParams: true });
 
 cards.get(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
@@ -69,3 +68,7 @@ cards.post(route, async (req, res) => {
 
   res.status(201).json(flashcard);
 });
+
+cards.use(route, cardId);
+
+export default cards;

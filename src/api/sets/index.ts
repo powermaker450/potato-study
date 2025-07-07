@@ -17,7 +17,7 @@
  */
 
 import { Router } from "express";
-import { id } from "./:id";
+import setId from "./:setId";
 import { DB } from "../../util";
 import { FlashcardSet as DBFlashcard } from "@prisma/client";
 import { FlashcardSet } from "@povario/potato-study.js/models";
@@ -29,7 +29,7 @@ import {
 } from "../middlewares";
 
 const route = "/sets";
-export const sets = Router();
+const sets = Router();
 
 sets.use(ValidateQuery);
 sets.use(ValidateBody);
@@ -64,7 +64,7 @@ sets.get(route, async (req, res) => {
           name: {
             contains: name,
           },
-          OR: creators?.map((creator) => ({ creator })),
+          OR: creators?.map(creator => ({ creator })),
         },
       });
     }
@@ -101,7 +101,7 @@ sets.post(route, async (req, res) => {
   });
 
   const flashcards = await DB.flashcard.createManyAndReturn({
-    data: set.flashcards.map((flashcard) => ({
+    data: set.flashcards.map(flashcard => ({
       ...flashcard,
       creator: user.id,
       setId: createdSet.id,
@@ -116,4 +116,6 @@ sets.post(route, async (req, res) => {
   res.status(201).json(data);
 });
 
-sets.use(route, id);
+sets.use(route, setId);
+
+export default sets;

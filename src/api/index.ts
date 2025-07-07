@@ -18,8 +18,8 @@
 
 import { Router } from "express";
 import { VerifyJson } from "./middlewares";
-import { auth } from "./auth";
-import { sets } from "./sets";
+import auth from "./auth";
+import sets from "./sets";
 
 const route = "/api";
 export const api = Router();

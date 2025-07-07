@@ -19,12 +19,12 @@
 import { Router } from "express";
 import { DB } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
-import { cards } from "./cards";
+import cards from "./cards";
 
 const route = "/:setId";
-export const id = Router();
+const setId = Router();
 
-id.get(route, async (req, res) => {
+setId.get(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
   const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
   const flashcards = await DB.flashcard.findMany({ where: { setId } });
@@ -37,4 +37,6 @@ id.get(route, async (req, res) => {
   res.json(data);
 });
 
-id.use(route, cards);
+setId.use(route, cards);
+
+export default setId;
