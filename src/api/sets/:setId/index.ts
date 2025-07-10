@@ -45,25 +45,27 @@ setId.patch(route, async (req, res) => {
 
   await DB.flashcardSet.update({
     where: {
-      id: setId
+      id: setId,
     },
-    data: { name }
+    data: { name },
   });
 
   res.status(204).send();
 });
 
-setId.put(route, Authentication, VerifyOwner)
+setId.put(route, Authentication, VerifyOwner);
 setId.put(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
-  const user = await DB.user.findFirstOrThrow({ where: { email: req.jwtData!.email } });
+  const user = await DB.user.findFirstOrThrow({
+    where: { email: req.jwtData!.email },
+  });
   const { name, flashcards } = await req.validate!("FlashcardSetUpdate");
 
   await DB.flashcardSet.update({
     where: {
-      id: setId
+      id: setId,
     },
-    data: { name }
+    data: { name },
   });
 
   await DB.flashcard.deleteMany({ where: { setId } });
@@ -72,12 +74,12 @@ setId.put(route, async (req, res) => {
     data: flashcards.map(flashcard => ({
       ...flashcard,
       creator: user.id,
-      setId
-    }))
+      setId,
+    })),
   });
 
   res.status(204).send();
-})
+});
 
 setId.use(route, cards);
 

@@ -17,7 +17,11 @@
  */
 
 import { Router } from "express";
-import { Authentication, ValidateParams, VerifyOwner } from "../../../../middlewares";
+import {
+  Authentication,
+  ValidateParams,
+  VerifyOwner,
+} from "../../../../middlewares";
 import { DB } from "../../../../../util";
 import { Flashcard } from "@povario/potato-study.js/models";
 

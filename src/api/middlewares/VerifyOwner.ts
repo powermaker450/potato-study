@@ -22,7 +22,9 @@ import { DB, NoSetAccessError } from "../../util";
 export const VerifyOwner: MiddlewareFunction = async (req, _, next) => {
   const { setId } = await req.validateParams!("SetId");
   const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
-  const user = await DB.user.findFirstOrThrow({ where: { email: req.jwtData!.email } });
+  const user = await DB.user.findFirstOrThrow({
+    where: { email: req.jwtData!.email },
+  });
 
   if (user.id !== set.creator) {
     throw new NoSetAccessError();
