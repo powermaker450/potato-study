@@ -17,10 +17,10 @@
  */
 
 import { Router } from "express";
-import { DB, NoSetAccessError } from "../../../util";
+import { DB } from "../../../util";
 import { FlashcardSet } from "@povario/potato-study.js/models";
 import cards from "./cards";
-import { Authentication } from "../../middlewares";
+import { Authentication, VerifyOwner } from "../../middlewares";
 
 const route = "/:setId";
 const setId = Router();
@@ -38,15 +38,9 @@ setId.get(route, async (req, res) => {
   res.json(data);
 });
 
-setId.patch(route, Authentication);
+setId.patch(route, Authentication, VerifyOwner);
 setId.patch(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
-  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
-  const user = await DB.user.findFirstOrThrow({ where: { email: req.jwtData!.email } });
-  if (user.id !== set.creator) {
-    throw new NoSetAccessError();
-  }
-
   const { name } = await req.validate!("FlashcardSetEdit");
 
   await DB.flashcardSet.update({
@@ -59,15 +53,10 @@ setId.patch(route, async (req, res) => {
   res.status(204).send();
 });
 
-setId.put(route, Authentication)
+setId.put(route, Authentication, VerifyOwner)
 setId.put(route, async (req, res) => {
   const { setId } = await req.validateParams!("SetId");
-  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
   const user = await DB.user.findFirstOrThrow({ where: { email: req.jwtData!.email } });
-  if (user.id !== set.creator) {
-    throw new NoSetAccessError();
-  }
-
   const { name, flashcards } = await req.validate!("FlashcardSetUpdate");
 
   await DB.flashcardSet.update({

@@ -17,8 +17,8 @@
  */
 
 import { Router } from "express";
-import { Authentication, ValidateParams } from "../../../../middlewares";
-import { DB, NoSetAccessError } from "../../../../../util";
+import { Authentication, ValidateParams, VerifyOwner } from "../../../../middlewares";
+import { DB } from "../../../../../util";
 import { Flashcard } from "@povario/potato-study.js/models";
 
 const route = "/:cardId";
@@ -36,15 +36,9 @@ cardId.get(route, async (req, res) => {
   res.json(flashcard);
 });
 
-cardId.patch(route, Authentication, async (req, res) => {
-  const { setId, cardId } = await req.validateParams!("CardId");
-  const { email } = req.jwtData!;
-  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
-  const user = await DB.user.findFirstOrThrow({ where: { email } });
-
-  if (set.creator !== user.id) {
-    throw new NoSetAccessError();
-  }
+cardId.patch(route, Authentication, VerifyOwner);
+cardId.patch(route, async (req, res) => {
+  const { cardId } = await req.validateParams!("CardId");
 
   const data = await req.validate!("FlashcardEdit");
   const updatedCard = await DB.flashcard.update({
@@ -55,15 +49,9 @@ cardId.patch(route, Authentication, async (req, res) => {
   res.json(updatedCard);
 });
 
-cardId.delete(route, Authentication, async (req, res) => {
-  const { setId, cardId } = await req.validateParams!("CardId");
-  const { email } = req.jwtData!;
-  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
-  const user = await DB.user.findFirstOrThrow({ where: { email } });
-
-  if (set.creator !== user.id) {
-    throw new NoSetAccessError();
-  }
+cardId.delete(route, Authentication, VerifyOwner);
+cardId.delete(route, async (req, res) => {
+  const { cardId } = await req.validateParams!("CardId");
 
   await DB.flashcard.delete({ where: { id: cardId } });
 

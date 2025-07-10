@@ -19,7 +19,7 @@
 import { Router } from "express";
 import { Authentication } from "../../../middlewares";
 import { Flashcard } from "@povario/potato-study.js/models";
-import { DB, NoSetAccessError, NotFoundError } from "../../../../util";
+import { DB, NotFoundError } from "../../../../util";
 import cardId from "./:cardId";
 
 const route = "/cards";
@@ -52,10 +52,6 @@ cards.post(route, async (req, res) => {
 
   if (!set) {
     throw new NotFoundError();
-  }
-
-  if (set.creator !== user!.id) {
-    throw new NoSetAccessError();
   }
 
   const flashcard: Flashcard = await DB.flashcard.create({

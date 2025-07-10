@@ -16,13 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./Authentication";
-export * from "./ErrorHandler";
-export * from "./NotFound";
-export * from "./RedirectToPage";
-export * from "./RequestLogger";
-export * from "./ValidateBody";
-export * from "./ValidateParams";
-export * from "./ValidateQuery";
-export * from "./VerifyJson";
-export * from "./VerifyOwner";
+import { MiddlewareFunction } from "../../custom";
+import { DB, NoSetAccessError } from "../../util";
+
+export const VerifyOwner: MiddlewareFunction = async (req, _, next) => {
+  const { setId } = await req.validateParams!("SetId");
+  const set = await DB.flashcardSet.findFirstOrThrow({ where: { id: setId } });
+  const user = await DB.user.findFirstOrThrow({ where: { email: req.jwtData!.email } });
+
+  if (user.id !== set.creator) {
+    throw new NoSetAccessError();
+  }
+
+  next();
+};
