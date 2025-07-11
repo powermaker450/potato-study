@@ -44,13 +44,13 @@ cardId.patch(route, Authentication, VerifyOwner);
 cardId.patch(route, async (req, res) => {
   const { cardId } = await req.validateParams!("CardId");
 
-  const data = await req.validate!("FlashcardEdit");
-  const updatedCard = await DB.flashcard.update({
+  const { text, index, answer } = await req.validate!("FlashcardEdit");
+  await DB.flashcard.update({
     where: { id: cardId },
-    data,
+    data: { text, index, answer, },
   });
 
-  res.json(updatedCard);
+  res.status(204).send();
 });
 
 cardId.delete(route, Authentication, VerifyOwner);
