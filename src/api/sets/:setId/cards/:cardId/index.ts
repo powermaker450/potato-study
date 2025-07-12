@@ -53,6 +53,19 @@ cardId.patch(route, async (req, res) => {
   res.status(204).send();
 });
 
+cardId.put(route, Authentication, VerifyOwner);
+cardId.put(route, async (req, res) => {
+  const { cardId } = await req.validateParams!("CardId");
+
+  const { text, index, answer } = await req.validate!("FlashcardEdit");
+  await DB.flashcard.update({
+    where: { id: cardId },
+    data: { text, index, answer }
+  });
+
+  res.status(204).send();
+});
+
 cardId.delete(route, Authentication, VerifyOwner);
 cardId.delete(route, async (req, res) => {
   const { cardId } = await req.validateParams!("CardId");
