@@ -21,7 +21,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@povario/logger": "link:/home/povario/git/logger",
+    "@povario/logger": "^0.1.0",
     "@povario/potato-study.js": "link:/home/povario/git/potato-study.js",
     "@prisma/client": "^6.10.1",
     "bcrypt": "^6.0.0",
