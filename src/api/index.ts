@@ -20,12 +20,13 @@ import { Router } from "express";
 import { VerifyJson } from "./middlewares";
 import auth from "./auth";
 import sets from "./sets";
+import users from "./users";
 
 const route = "/api";
 export const api = Router();
 
 api.use(VerifyJson);
-api.use(route, auth, sets);
+api.use(route, auth, sets, users);
 
 api.get(route, (_, res) => {
   res.json({ status: "ok" });

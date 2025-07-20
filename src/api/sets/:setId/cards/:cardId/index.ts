@@ -47,7 +47,7 @@ cardId.patch(route, async (req, res) => {
   const { text, index, answer } = await req.validate!("FlashcardEdit");
   await DB.flashcard.update({
     where: { id: cardId },
-    data: { text, index, answer, },
+    data: { text, index, answer },
   });
 
   res.status(204).send();
@@ -60,7 +60,7 @@ cardId.put(route, async (req, res) => {
   const { text, index, answer } = await req.validate!("FlashcardEdit");
   await DB.flashcard.update({
     where: { id: cardId },
-    data: { text, index, answer }
+    data: { text, index, answer },
   });
 
   res.status(204).send();

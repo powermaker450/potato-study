@@ -35,7 +35,7 @@ sets.use(ValidateBody);
 sets.use(ValidateParams);
 
 sets.get(route, async (req, res) => {
-  let sets: { id: number, name: string, creator: number }[];
+  let sets: { id: number; name: string; creator: number }[];
   const data: FlashcardSet[] = [];
 
   // If there are request parameters, check them
