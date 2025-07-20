@@ -19,7 +19,6 @@
 import { Router } from "express";
 import setId from "./:setId";
 import { DB } from "../../util";
-import { FlashcardSet as DBFlashcard } from "@prisma/client";
 import { FlashcardSet } from "@povario/potato-study.js/models";
 import {
   Authentication,
@@ -36,7 +35,7 @@ sets.use(ValidateBody);
 sets.use(ValidateParams);
 
 sets.get(route, async (req, res) => {
-  let sets: DBFlashcard[];
+  let sets: { id: number, name: string, creator: number }[];
   const data: FlashcardSet[] = [];
 
   // If there are request parameters, check them
