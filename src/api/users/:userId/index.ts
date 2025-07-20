@@ -16,6 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./CardId";
-export * from "./SetId";
-export * from "./UserId";
+import { Router } from "express";
+import { ValidateParams } from "../../middlewares";
+import { DB } from "../../../util";
+
+const route = "/:userId";
+const userId = Router();
+
+userId.get(route, ValidateParams);
+userId.get(route, async (req, res) => {
+  const { userId } = await req.validateParams!("UserId");
+  const user = await DB.user.findFirstOrThrow({ where: { id: userId } });
+
+  const data: { id: typeof user.id; username: typeof user.username } = {
+    id: user.id,
+    username: user.username,
+  };
+
+  res.json(data);
+});
+
+export default userId;

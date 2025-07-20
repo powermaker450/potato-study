@@ -18,6 +18,7 @@
 
 import { Router } from "express";
 import { DB } from "../../util";
+import userId from "./:userId";
 
 const route = "/users";
 const users = Router();
@@ -27,5 +28,7 @@ users.get(route, async (_, res) => {
 
   res.json(users.map(user => ({ id: user.id, username: user.username })));
 });
+
+users.use(route, userId);
 
 export default users;

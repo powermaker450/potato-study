@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export * from "./CardId";
-export * from "./SetId";
-export * from "./UserId";
+import { object, number } from "yup";
+
+export const UserId = object({
+  userId: number().positive().required(),
+});
