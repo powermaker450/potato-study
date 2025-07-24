@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@povario/logger": "^0.1.0",
-    "@povario/potato-study.js": "link:/home/povario/git/potato-study.js",
+    "@povario/potato-study.js": "^0.1.0",
     "@prisma/client": "^6.10.1",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
