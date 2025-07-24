@@ -17,19 +17,23 @@
  */
 
 import { Router } from "express";
+import { Authentication } from "../middlewares";
 import { DB } from "../../util";
-import userId from "./:userId";
-import me from "./me";
 
-const route = "/users";
-const users = Router();
+const route = "/me";
+const me = Router();
 
-users.get(route, async (_, res) => {
-  const users = await DB.user.findMany();
+me.get(route, Authentication);
+me.get(route, async (req, res) => {
+  const user = await DB.user.findFirstOrThrow({
+    where: { email: req.jwtData!.email },
+  });
 
-  res.json(users.map(user => ({ id: user.id, username: user.username })));
+  res.json({
+    id: user.id,
+    email: user.email,
+    username: user.username,
+  });
 });
 
-users.use(route, me, userId);
-
-export default users;
+export default me;
