@@ -3,9 +3,9 @@
 A tool to help memorize definitions and terms with flashcards, games and more
 
 <p>
-    <img alt="The potato study homepage, displaying all flashcard sets." src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/home.png" width="200">
-    <img alt="A single flashcard text" src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/set.png" width="200">
-    <img alt="A single flashcard answer" src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/set-answer.png" width="200">
+    <img alt="The potato study homepage, displaying all flashcard sets." src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/home.png" width="500">
+    <img alt="A single flashcard text" src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/set.png" width="500">
+    <img alt="A single flashcard answer" src="https://raw.githubusercontent.com/powermaker450/potato-study/refs/heads/main/repo/set-answer.png" width="500">
 </p>
 
 ## Hosting
